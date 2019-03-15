@@ -14,7 +14,7 @@ function draw_rect( ctx, stroke, fill )
     ctx.strokeStyle = stroke;
     ctx.fillStyle = fill;
     ctx.lineWidth = 5;
-    ctx.rect(20, 15, canvas.width - 40, canvas.height - 30);
+    ctx.rect(5, 5, canvas.width - 10, canvas.height - 10);
     ctx.stroke();
     ctx.fill();
     ctx.restore( );

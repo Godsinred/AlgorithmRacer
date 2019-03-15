@@ -16,8 +16,27 @@ Description: This file holds the main body of the program. It calls all the func
   <body>
     <h1>NFG</h1>
 
-    <canvas id="grid" width="400" height="400"></canvas>
+    <div class="buttonRow">
+      <button type="button" id="mysteryButton">Don't Click Me! :)</button>
+      <button type="button" id="stepButton">Step</button>
+    </div>
+    
+    <div class="column">  
+      <text class="algoTitles">Insertion Sort</text>
+      <canvas id="grid" width="810" height="410"></canvas>
+    </div>
 
+    <div class="column">  
+        <text class="algoTitles">Merge Sort</text>
+        <canvas id="grid2" width="810" height="410"></canvas>
+    </div>
+
+    <div class="column"> 
+        <text class="algoTitles">Quick Sort</text>
+        <canvas id="grid3" width="810" height="410"></canvas>
+    </div>
+      
+    
   </body>
 
   <script src="assets/draw-stuff.js"></script>
@@ -36,11 +55,17 @@ Description: This file holds the main body of the program. It calls all the func
     var canvas = document.getElementById( "grid" );
     var context = canvas.getContext( "2d" );
 
+    var canvas2 = document.getElementById( "grid2" );
+    var context2 = canvas2.getContext( "2d" );
+
+    var canvas3 = document.getElementById( "grid3" );
+    var context3 = canvas3.getContext( "2d" );
+
     // draws the rectange outside
     // params: context, border color, middle fill color
     draw_rect( context);
-    draw_rect( context);
-    draw_rect( context);
+    draw_rect( context2);
+    draw_rect( context3);
     
     // Draws the line marks on the grid
     //draw_grid( context, 5, 250, 'black', 'black' );

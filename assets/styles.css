@@ -4,19 +4,70 @@ Contact: jtishii@csu.fullerton.edu, mattmikulka@gmail.com
 Description: This files applies formatting to the webpage
 */
 
-body {
-  text-align: center;
-  font-family: sans-serif;
-}
-canvas {
-  background-color: black;
-  margin: auto;
-  display: block;
-}
 h1 {
   text-align: center;
+  font-size: 50px;
 }
 
 h4 {
   text-align: center;
+}
+
+body {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+canvas {
+  padding: 10px;
+}
+
+.algoTitles{
+  display: block;
+  width: 100%;
+  font-size: 40px;
+}
+
+.column{
+  position: relative;
+  float: left;
+  width: 33.3%;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: space-between;
+}
+#mysteryButton {
+  border: solid 5px black;
+  background-color: #f73618 ;
+  color: yellow;
+  padding: 30px 60px;
+  text-align: center;
+  font-size: 16px;
+  margin-left: 40px;
+  margin-bottom: 30px;
+  /* makes the pointer into a hand to make it more button feely. yay ux/ui */
+  cursor: pointer; 
+}
+
+#mysteryButton:hover {
+  background-color: red;
+}
+
+#stepButton {
+  border: solid 5px black;
+  background-color: #4CAF51;
+  color: white;
+  padding: 30px 60px;
+  text-align: center;
+  font-size: 16px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+  /* makes the pointer into a hand to make it more button feely. yay ux/ui */
+  cursor: pointer; 
+}
+
+#stepButton:hover {
+  background-color: green;
 }
