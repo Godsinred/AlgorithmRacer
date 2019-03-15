@@ -16,7 +16,7 @@ Description: This file holds the main body of the program. It calls all the func
   <body>
     <h1>NFG</h1>
 
-    <canvas id="grid" width="2040" height="2030"></canvas>
+    <canvas id="grid" width="400" height="400"></canvas>
 
   </body>
 
@@ -39,13 +39,15 @@ Description: This file holds the main body of the program. It calls all the func
     // draws the rectange outside
     // params: context, border color, middle fill color
     draw_rect( context);
+    draw_rect( context);
+    draw_rect( context);
     
     // Draws the line marks on the grid
-    draw_grid( context, 5, 250, 'black', 'black' );
+    //draw_grid( context, 5, 250, 'black', 'black' );
 
     // fills the canvas
     var num_canvas_cells = 400;
-    cella_90(context, num_canvas_cells);
+    //cella_90(context, num_canvas_cells);
 
   </script>
 </html>

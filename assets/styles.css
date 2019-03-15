@@ -9,7 +9,9 @@ body {
   font-family: sans-serif;
 }
 canvas {
-  background-color: white;
+  background-color: black;
+  margin: auto;
+  display: block;
 }
 h1 {
   text-align: center;
