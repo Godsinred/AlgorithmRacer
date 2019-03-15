@@ -1,0 +1,51 @@
+<!-- 
+Authors: Jonathan Ishii, Matthew Mikulka
+Contact: jtishii@csu.fullerton.edu, mattmikulka@csu.fullerton.edu
+Description: This file holds the main body of the program. It calls all the functions that draws the grid on the webpage.
+-->
+<!doctype html>
+<html>
+  <head>
+    <!-- Title on the top of the brower tab --> 
+    <title>Algorithm Racer</title> 
+    
+    <script src="assets/draw-stuff.js"></script>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  
+  <body>
+    <h1>NFG</h1>
+
+    <canvas id="grid" width="2040" height="2030"></canvas>
+
+  </body>
+
+  <script src="assets/draw-stuff.js"></script>
+  <script>
+
+  // =====================================================  draw_title ====
+  // Draw filled rect.
+  function draw_title( context ) 
+  {
+      context.save( );
+      context.fillStyle = 'purple';
+      context.font = "30px Arial";
+      context.restore( );
+  }
+  // =====================================================  Main ====
+    var canvas = document.getElementById( "grid" );
+    var context = canvas.getContext( "2d" );
+
+    // draws the rectange outside
+    // params: context, border color, middle fill color
+    draw_rect( context);
+    
+    // Draws the line marks on the grid
+    draw_grid( context, 5, 250, 'black', 'black' );
+
+    // fills the canvas
+    var num_canvas_cells = 400;
+    cella_90(context, num_canvas_cells);
+
+  </script>
+</html>
