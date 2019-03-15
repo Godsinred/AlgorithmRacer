@@ -68,10 +68,13 @@ Description: This file holds the main body of the program. It calls all the func
     draw_rect( context2);
     draw_rect( context3);
 
+    // params: context, size between each line, accent line, color of line, color of line)
     // draws all the lines on the contexts, accent line every 10 steps
     draw_grid( context, 120, 1200, 'black', 'black' );
     draw_grid( context2, 120, 1200, 'black', 'black' );
     draw_grid( context3, 120, 1200, 'black', 'black' );
+
+    drawStep(context);
 
 
   </script>

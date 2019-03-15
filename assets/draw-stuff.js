@@ -25,14 +25,23 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
     rctx.save( );
     rctx.fillStyle = rfill;
     let width = rctx.canvas.width - 5;
-    let height = rctx.canvas.height - 5;
+    let height = rctx.canvas.height - 10;
+    rctx.lineWidth = 1;
+
+    for ( var ix = 0; ix < width - 10; ix += 60 )
+    {
+        rctx.beginPath( );
+        rctx.moveTo( ix + 5, 5 );
+        rctx.lineTo( ix + 5, height + 5);
+        rctx.stroke( );
+    }
 
     for ( var iy = 0; iy < height; iy += rminor )
     {
         rctx.beginPath( );
         rctx.moveTo( 5, iy + 5 );
         rctx.lineTo( width, iy + 5 );
-        rctx.lineWidth = ( iy % rmajor == 0 ) ? 3 : 1;
+        
         if (iy % rmajor === 0 && iy !== 0)
         {
             rctx.lineWidth = 4;
@@ -50,4 +59,41 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
 
 function nextStep() {
     document.getElementById("stepButton").style.color = "red";
+}
+
+function drawStep(ctx)
+{
+//     let width = ctx.canvas.width - 5;
+//     let height = ctx.canvas.height - 5;
+
+    var myArray = ["0", "B", "A", "3", "2", "8", "4", "7", "6", "5", "1", "9"];
+    for(var i = 0; i < 12; ++i)
+    {
+        drawArray(ctx, myArray, 0);
+    }
+}
+
+function drawArray(ctx, myArray, row)
+{
+    for (var i = 0; i < 12; ++i)
+    {
+        ctx.save( );
+        ctx.fillStyle = "green";
+        ctx.textAlign = "center";
+        ctx.font = "30px Arial";
+        ctx.fillText(myArray[i], 5 + 30 + 60 * i, 70 + (120 * row)); 
+        ctx.restore( );
+    }
+}
+
+// for a different part
+function drawValue(ctx, value)
+{
+    fill = 'green';
+    ctx.save( );
+    ctx.fillStyle = fill;
+    ctx.lineWidth = 3;
+    ctx.rect(5 + value * 60, 5 + (11 - value) * 10, 60, (value + 1) * 10);
+    ctx.fill();
+    ctx.restore( );
 }
