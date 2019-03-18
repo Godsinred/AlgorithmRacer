@@ -104,7 +104,12 @@ Description: This file holds the main body of the program. It calls all the func
               ["B", "6", "0", "0", "5", "A", "6", "2", "7", "B", "2", "3"]];
 
     // chooses a random array from the list above. Math.random = [0,1) multiplied by the length returns one of the random arrays
-    myArray = arrayDomain[Math.floor(Math.random() * arrayDomain.length)];
+    var myArray = arrayDomain[Math.floor(Math.random() * arrayDomain.length)];
+
+    insertionArray = myArray;
+    mergeArray = myArray.slice(); // slice () makes a copy of the array object
+    quickArray = myArray.slice();
+    pivotValue = myArray[0];
 
   </script>
 </html>

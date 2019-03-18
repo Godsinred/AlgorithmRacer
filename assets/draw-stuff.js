@@ -8,7 +8,20 @@ Description: This program illustrates Wolfram's Rule-90 is based on a 1D array w
 // Draw filled rect.
 
 var row_number = 0;
-var myArray;
+
+var insertionArray;
+var insertionIndex = 1;
+var insertionDone = false;
+
+var mergeArray;
+var mergeRow = 1;
+var mergeDone = false;
+
+var quickArray;
+var pivotValue;
+var leftIndex = 0;
+var rightIndex = 11;
+var quickDone = false;
 
 function draw_rect( ctx, stroke, fill ) 
 {
@@ -63,6 +76,7 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
 
 function nextStep() 
 {
+    // colors the button red on the first click
     document.getElementById("stepButton").style.color = "red";
 
     var canvas = document.getElementById( "grid" );
@@ -74,25 +88,16 @@ function nextStep()
     var canvas3 = document.getElementById( "grid3" );
     var quick = canvas3.getContext( "2d" );
 
-    drawArray(insertion, myArray, row_number);
-    drawArray(merge, myArray, row_number);
-    drawArray(quick, myArray, row_number);
+    insertionPass(insertion);
+    mergePass(merge);
+    quickPass(quick);
 
     // so the program knows which row to write on
     ++row_number;
 
 }
 
-function drawStep(ctx, myArray)
-{
-//     let width = ctx.canvas.width - 5;
-//     let height = ctx.canvas.height - 5;
-
-    drawArray(ctx, myArray, 1);
-
-}
-
-function drawArray(ctx, myArray, row)
+function drawArray(ctx, myArray)
 {
     for (var i = 0; i < 12; ++i)
     {
@@ -100,21 +105,9 @@ function drawArray(ctx, myArray, row)
         ctx.fillStyle = "green";
         ctx.textAlign = "center";
         ctx.font = "30px Arial";
-        ctx.fillText(myArray[i], 5 + 30 + 60 * i, 70 + (120 * row)); 
+        ctx.fillText(myArray[i], 5 + 30 + 60 * i, 70 + (120 *  row_number)); 
         ctx.restore( );
     }
-}
-
-// for a different part
-function drawValue(ctx, value)
-{
-    fill = 'green';
-    ctx.save( );
-    ctx.fillStyle = fill;
-    ctx.lineWidth = 3;
-    ctx.rect(5 + value * 60, 5 + (11 - value) * 10, 60, (value + 1) * 10);
-    ctx.fill();
-    ctx.restore( );
 }
 
 // when the window is scroll it will call myFunction
@@ -136,4 +129,89 @@ function myFunction() {
     {
         navbar.classList.remove("sticky");
     }
+}
+
+function insertionPass(insertion)
+{
+    if(!insertionDone)
+    {
+        // to determine if the pass is finished
+        var passDone = false;
+
+        // the comparison index that will be compared to the new inserted value
+        var i = insertionIndex - 1;
+        while (!passDone)
+        {
+            console.log(insertionArray[insertionIndex].charCodeAt(0));
+            console.log(insertionArray[i].charCodeAt(0));
+            // checks to see if the new value is smaller than the sorted array portion
+            if(insertionArray[insertionIndex].charCodeAt(0) < insertionArray[i].charCodeAt(0))
+            {
+                console.log("SMALLER");
+                // to make sure that we don't go out of bounds
+                if(i == 0)
+                {
+                    passDone = true;
+                }
+                else
+                {
+                    // decrements to check to see if the new value is bigger
+                    --i;
+                }
+            }
+            else
+            {
+                // we found its correct position and now we need to end the loop
+                console.log("LARGER");
+                passDone = true;   
+                ++i;
+            }
+        }
+    
+        // shifts the elements down to their new correct position
+        insertionShift(i);
+        // draws the new sorted array
+        drawArray(insertion, insertionArray);
+    
+        // new element positon
+        ++insertionIndex;
+        
+        // checks to see if we completed all the passes
+        if(insertionIndex == 12)
+        {
+            insertionDone = true;
+        }
+    }
+}
+
+function insertionShift(newIndex)
+{
+    // temporary value for the array
+    var insertValue = insertionArray[insertionIndex];
+
+    console.log("NEW INDEX: " +  newIndex);
+    // shifts all the elements down to the new position
+    for(var i = insertionIndex; newIndex < i; --i)
+    {
+        console.log(i);
+        insertionArray[i] = insertionArray[i - 1];
+    }
+
+    // inserts the new value to its new correct location
+    insertionArray[newIndex] = insertValue;
+}
+
+function mergePass(merge)
+{
+
+
+    drawArray(merge, mergeArray);
+    
+}
+
+function quickPass(quick)
+{
+
+    
+    drawArray(quick, quickArray);
 }
