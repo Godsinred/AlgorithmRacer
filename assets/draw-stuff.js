@@ -5,18 +5,22 @@ Description: This program illustrates Wolfram's Rule-90 is based on a 1D array w
             We will illustate on a webpage visually how this works. This file holds all the functions to be called by the Cela Rule 90.html file
 */
 
-// Draw filled rect.
 
+
+// row number for the drawArray to write on
 var row_number = 0;
 
+// insertion sort variables to keep from pass to pass
 var insertionArray;
 var insertionIndex = 1;
 var insertionDone = false;
 
+// merge sort variables to keep from pass to pass
 var mergeArray;
 var mergeRow = 1;
 var mergeDone = false;
 
+// quick sort variables to keep from pass to pass
 var quickArray;
 var pivotValue;
 var leftIndex = 0;
@@ -212,6 +216,6 @@ function mergePass(merge)
 function quickPass(quick)
 {
 
-    
+
     drawArray(quick, quickArray);
 }
