@@ -4,41 +4,38 @@ Contact: jtishii@csu.fullerton.edu, mattmikulka@gmail.com
 Description: This files applies formatting to the webpage
 */
 
-h1 {
-  text-align: center;
-  font-size: 50px;
-}
-
-h4 {
-  text-align: center;
-}
-
-body {
-  text-align: center;
-  font-family: sans-serif;
-}
-
-canvas {
-  padding: 10px;
-}
-
-.algoTitles{
-  display: block;
-  width: 100%;
-  font-size: 40px;
-}
-
-.column{
-  position: relative;
-  float: left;
-  width: 33.3%;
-  margin-bottom: 100px;
-}
-
-.buttonRow {
+#navbar {
+  z-index: 3;
+  overflow: hidden;
   display: flex;
   justify-content: space-between;
+  padding: 40px;
+  background: transparent;
+
+  text-align: center;
 }
+
+#navbar text {
+  font-size: 100px;
+}
+
+.content {
+  padding: 16px;
+}
+
+/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/* Add some top paddng to the page content to prevent sudden quick movement 
+  (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .content {
+  padding-top: 60px;
+}
+
 #mysteryButton {
   border: solid 5px black;
   background-color: #f44430 ;
@@ -71,4 +68,31 @@ canvas {
 
 #stepButton:hover {
   background-color: green;
+}
+
+h4 {
+  text-align: center;
+}
+
+body {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+canvas {
+  z-index: 0;
+  padding: 10px;
+}
+
+.algoTitles{
+  display: block;
+  width: 100%;
+  font-size: 40px;
+}
+
+.column{
+  position: relative;
+  float: left;
+  width: 33.3%;
+  margin-bottom: 100px;
 }

@@ -116,3 +116,24 @@ function drawValue(ctx, value)
     ctx.fill();
     ctx.restore( );
 }
+
+// when the window is scroll it will call myFunction
+window.onscroll = function() {myFunction()};
+
+// get the navbar element
+var navbar = document.getElementById("navbar");
+
+// get the offset of the top
+var sticky = navbar.offsetTop;
+
+// add the sticky class to the navbar when you reach its scroll postition. remove "stick" when you leave the scroll postion
+function myFunction() {
+    if (window.pageYOffset >= sticky) 
+    {
+        navbar.classList.add("sticky");
+    }
+    else
+    {
+        navbar.classList.remove("sticky");
+    }
+}
