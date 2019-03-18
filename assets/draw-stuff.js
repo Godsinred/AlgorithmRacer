@@ -6,6 +6,10 @@ Description: This program illustrates Wolfram's Rule-90 is based on a 1D array w
 */
 
 // Draw filled rect.
+
+var row_number = 0;
+var myArray;
+
 function draw_rect( ctx, stroke, fill ) 
 {
     stroke = stroke || 'black';
@@ -57,20 +61,35 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
     rctx.restore( );
 }
 
-function nextStep() {
+function nextStep() 
+{
     document.getElementById("stepButton").style.color = "red";
+
+    var canvas = document.getElementById( "grid" );
+    var insertion = canvas.getContext( "2d" );
+
+    var canvas2 = document.getElementById( "grid2" );
+    var merge = canvas2.getContext( "2d" );
+
+    var canvas3 = document.getElementById( "grid3" );
+    var quick = canvas3.getContext( "2d" );
+
+    drawArray(insertion, myArray, row_number);
+    drawArray(merge, myArray, row_number);
+    drawArray(quick, myArray, row_number);
+
+    // so the program knows which row to write on
+    ++row_number;
+
 }
 
-function drawStep(ctx)
+function drawStep(ctx, myArray)
 {
 //     let width = ctx.canvas.width - 5;
 //     let height = ctx.canvas.height - 5;
 
-    var myArray = ["0", "B", "A", "3", "2", "8", "4", "7", "6", "5", "1", "9"];
-    for(var i = 0; i < 12; ++i)
-    {
-        drawArray(ctx, myArray, 0);
-    }
+    drawArray(ctx, myArray, 1);
+
 }
 
 function drawArray(ctx, myArray, row)

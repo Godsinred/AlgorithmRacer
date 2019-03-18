@@ -23,17 +23,17 @@ Description: This file holds the main body of the program. It calls all the func
     
     <div class="column">  
       <text class="algoTitles">Insertion Sort</text>
-      <canvas id="grid" width="730" height="1330"></canvas>
+      <canvas id="grid" width="730" height="2650"></canvas>
     </div>
 
     <div class="column">  
         <text class="algoTitles">Merge Sort</text>
-        <canvas id="grid2" width="730" height="1330"></canvas>
+        <canvas id="grid2" width="730" height="2650"></canvas>
     </div>
 
     <div class="column"> 
         <text class="algoTitles">Quick Sort</text>
-        <canvas id="grid3" width="730" height="1330"></canvas>
+        <canvas id="grid3" width="730" height="2650"></canvas>
     </div>
       
     
@@ -70,12 +70,42 @@ Description: This file holds the main body of the program. It calls all the func
 
     // params: context, size between each line, accent line, color of line, color of line)
     // draws all the lines on the contexts, accent line every 10 steps
+    // insertion sort
     draw_grid( context, 120, 1200, 'black', 'black' );
+    // merge sort
     draw_grid( context2, 120, 1200, 'black', 'black' );
+    // quick sort
     draw_grid( context3, 120, 1200, 'black', 'black' );
 
-    drawStep(context);
 
+    // here we can choose a random array to be sorted
+    arrayDomain = [["0", "B", "A", "3", "2", "8", "4", "7", "6", "5", "1", "9"],
+              ["0", "A", "9", "8", "1", "A", "3", "9", "2", "0", "1", "1"],
+              ["1", "6", "3", "8", "9", "4", "0", "A", "5", "2", "B", "7"],
+              ["1", "9", "8", "4", "1", "B", "3", "8", "2", "6", "2", "5"],
+              ["2", "9", "7", "B", "4", "0", "1", "6", "3", "8", "A", "5"],
+              ["2", "6", "1", "0", "9", "4", "8", "7", "8", "6", "2", "6"],
+              ["3", "4", "5", "7", "1", "9", "2", "0", "6", "8", "B", "A"],
+              ["3", "5", "6", "A", "A", "0", "2", "3", "B", "7", "2", "4"],
+              ["4", "B", "6", "0", "7", "9", "A", "2", "1", "8", "3", "5"],
+              ["4", "0", "B", "0", "6", "5", "6", "6", "7", "1", "0", "A"],
+              ["5", "2", "8", "1", "A", "B", "3", "4", "7", "9", "0", "6"],
+              ["5", "7", "5", "0", "6", "8", "4", "B", "8", "9", "3", "4"],
+              ["6", "9", "8", "7", "2", "B", "3", "A", "5", "4", "1", "0"],
+              ["6", "A", "2", "3", "0", "5", "3", "0", "4", "7", "8", "1"],
+              ["7", "0", "1", "A", "6", "9", "3", "5", "4", "2", "B", "8"],
+              ["7", "8", "5", "2", "8", "6", "1", "0", "3", "4", "2", "9"],
+              ["8", "7", "3", "A", "9", "4", "2", "5", "B", "1", "6", "0"],
+              ["8", "A", "1", "5", "9", "3", "4", "7", "9", "0", "8", "5"],
+              ["9", "0", "B", "3", "4", "2", "7", "5", "6", "1", "8", "A"],
+              ["9", "9", "B", "5", "3", "5", "1", "A", "3", "3", "A", "B"],
+              ["A", "4", "0", "B", "5", "8", "6", "1", "7", "9", "2", "3"],
+              ["A", "3", "9", "5", "9", "A", "2", "2", "A", "4", "4", "4"],
+              ["B", "8", "A", "4", "6", "3", "7", "9", "0", "1", "5", "2"],
+              ["B", "6", "0", "0", "5", "A", "6", "2", "7", "B", "2", "3"]];
+
+    // chooses a random array from the list above. Math.random = [0,1) multiplied by the length returns one of the random arrays
+    myArray = arrayDomain[Math.floor(Math.random() * arrayDomain.length)];
 
   </script>
 </html>
