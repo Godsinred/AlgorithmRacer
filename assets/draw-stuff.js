@@ -53,7 +53,7 @@ var quickArray = {};
 var pivotIndex= 0;
 var pivotValue = 0;
 // start and end is the original indexes
-var startIndex = 1;
+var startIndex = 0;
 var endIndex = 11;
 // left and right are used to scan through the array
 var leftIndex = 1;
@@ -154,8 +154,8 @@ function nextStep()
         var canvas3 = document.getElementById( "grid3" );
         var quick = canvas3.getContext( "2d" );
 
-        insertionStep(insertion);
-        mergeStep(merge);
+        //insertionStep(insertion);
+        //mergeStep(merge);
         quickStep(quick);
 
         // updates the counter display in the navbar
@@ -381,34 +381,43 @@ function quickStep(quick)
     {
         if (!leftFound)
         {
-            if (quickArray[leftIndex] < pivotValue)
+            // checks to make sure that we don't go out of bounds
+            if (leftIndex > endIndex)
             {
-                ++leftIndex;
+                    --leftIndex;
+                    quickPassDone = true;                
             }
             else
             {
-                if (leftIndex > rightIndex)
+                // scans from left to right to try and find a value bigger than the pivot
+                if (quickArray[leftIndex] <= pivotValue)
                 {
-                    --leftIndex
-                    quickPassDone = true;
+                    ++leftIndex;
                 }
-                leftFound = true;
+                else
+                {
+                    leftFound = true;
+                }
             }
         }
         else if (!rightFound)
         {
-            if (quickArray[rightIndex] > pivotValue)
+            // checks to make sure that we don't go out of bounds
+            if (rightIndex < startIndex)
             {
-                --rightIndex;
+                ++rightIndex;
+                quickPassDone = true;
             }
             else
             {
-                if (rightIndex < leftIndex)
+                if (quickArray[rightIndex] > pivotValue)
                 {
-                    rightIndex = endIndex;
-                    quickPassDone = true;
+                    --rightIndex;
                 }
-                rightFound = true;
+                else
+                {
+                    rightFound = true;
+                }   
             }
         }
 
@@ -418,6 +427,9 @@ function quickStep(quick)
             quickArray[rightIndex] = quickArray[leftIndex];
             quickArray[leftIndex] = temp;
             
+            drawArray(quick, quickArray,quickRowNum)
+            ++quickRowNum;
+
             leftFound = false;
             rightFound = false;
 
@@ -425,16 +437,50 @@ function quickStep(quick)
             --rightIndex;
         }
 
-        if (leftIndex > rightIndex || quickPassDone)
+        if (leftIndex >= rightIndex || quickPassDone)
         {
             // means elements were found to be swapped
             if (!quickPassDone)
+            {   if (leftIndex > rightIndex)
+                {
+                    // swaps the pivot value
+                    var temp = quickArray[rightIndex];
+                    quickArray[rightIndex] = pivotValue;
+                    quickArray[pivotIndex] = temp;
+                    pivotIndex = rightIndex;
+                }
+                else if (leftIndex == rightIndex && pivotValue >= quickArray[rightIndex])
+                {
+                    // swaps the pivot value
+                    var temp = quickArray[rightIndex];
+                    quickArray[rightIndex] = pivotValue;
+                    quickArray[pivotIndex] = temp;
+                    pivotIndex = rightIndex;
+                }
+                else
+                {
+                    // swaps the pivot value with one less since the middle value is larger
+                    var temp = quickArray[rightIndex - 1];
+                    quickArray[rightIndex - 1] = pivotValue;
+                    quickArray[pivotIndex] = temp;
+                    pivotIndex = rightIndex - 1;
+                }
+            }
+            else if (quickPassDone && leftFound)
             {
-                // swaps the pivot vale=ue
-                var temp = quickArray[rightIndex];
-                quickArray[rightIndex] = pivotValue;
+                // swaps the pivot value with one less than the found value
+                var temp = quickArray[leftIndex];
+                quickArray[leftIndex] = pivotValue;
                 quickArray[pivotIndex] = temp;
-                pivotIndex = rightIndex;
+                pivotIndex = leftIndex;
+            }
+            else if (quickPassDone)
+            {
+                // swaps the pivot value with the last value since it is all bigger
+                var temp = quickArray[leftIndex];
+                quickArray[leftIndex] = pivotValue;
+                quickArray[pivotIndex] = temp;
+                pivotIndex = leftIndex;
             }
             
             console.log("pivotIndex: " + pivotIndex);
@@ -455,12 +501,19 @@ function quickStep(quick)
             var indexes = startEndIndexes[0];
             startEndIndexes.splice(0,1);
             console.log(indexes);
-            leftIndex = indexes[0];
-            startIndex = leftIndex;
+            startIndex = indexes[0];
+            leftIndex = startIndex;
             rightIndex = indexes[1];
             endIndex = rightIndex;
-            pivotValue = quickArray[leftIndex];
+            pivotValue = quickArray[startIndex];
             ++leftIndex;
+            console.log("startIndexNew: " + startIndex);
+            console.log("leftIndexNew: " + leftIndex);
+            console.log("pivotValueNew: " + pivotValue);
+
+            leftFound = false;
+            rightFound = false;
+            quickPassDone = false;
 
             drawArray(quick, quickArray, quickRowNum);
             ++quickRowNum;
