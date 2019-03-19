@@ -50,9 +50,19 @@ var mergeDone = false;
 
 // quick sort variables to keep from pass to pass
 var quickArray = {};
-var pivotValue = -1;
-var leftIndex = 0;
+var pivotIndex= 0;
+var pivotValue = 0;
+// start and end is the original indexes
+var startIndex = 1;
+var endIndex = 11;
+// left and right are used to scan through the array
+var leftIndex = 1;
 var rightIndex = 11;
+var startEndIndexes = [];
+var leftFound = false;
+var rightFound = false;
+var quickRowNum = 0;
+var quickPassDone = false;
 var quickDone = false;
 
 // flag to determine if the first algorithm is finished
@@ -146,7 +156,7 @@ function nextStep()
 
         insertionStep(insertion);
         mergeStep(merge);
-        quickPass(quick);
+        quickStep(quick);
 
         // updates the counter display in the navbar
         ++counter;
@@ -337,8 +347,6 @@ function mergeStep(merge)
         
         ++mergeGroup;
 
-        
-
         if (mergeGroup > (12 / Math.pow(2, mergeRow)) || mergePassDone)
         {
             //console.log("mergePassDone, resetting pass.");
@@ -367,9 +375,97 @@ function mergeStep(merge)
     }
 }
 
-function quickPass(quick)
+function quickStep(quick)
 {
+    if (!quickPassDone)
+    {
+        if (!leftFound)
+        {
+            if (quickArray[leftIndex] < pivotValue)
+            {
+                ++leftIndex;
+            }
+            else
+            {
+                if (leftIndex > rightIndex)
+                {
+                    --leftIndex
+                    quickPassDone = true;
+                }
+                leftFound = true;
+            }
+        }
+        else if (!rightFound)
+        {
+            if (quickArray[rightIndex] > pivotValue)
+            {
+                --rightIndex;
+            }
+            else
+            {
+                if (rightIndex < leftIndex)
+                {
+                    rightIndex = endIndex;
+                    quickPassDone = true;
+                }
+                rightFound = true;
+            }
+        }
 
+        if (leftFound && rightFound)
+        {
+            var temp = quickArray[rightIndex];
+            quickArray[rightIndex] = quickArray[leftIndex];
+            quickArray[leftIndex] = temp;
+            
+            leftFound = false;
+            rightFound = false;
 
-    //drawArray(quick, quickArray);
+            ++leftIndex;
+            --rightIndex;
+        }
+
+        if (leftIndex > rightIndex || quickPassDone)
+        {
+            // means elements were found to be swapped
+            if (!quickPassDone)
+            {
+                // swaps the pivot vale=ue
+                var temp = quickArray[rightIndex];
+                quickArray[rightIndex] = pivotValue;
+                quickArray[pivotIndex] = temp;
+                pivotIndex = rightIndex;
+            }
+            
+            console.log("pivotIndex: " + pivotIndex);
+            console.log("leftIndex: " + leftIndex);
+            console.log("rightIndex: " + rightIndex);
+            if (pivotIndex - 1 > startIndex)
+            {
+                console.log("pivotIndex - 1 > leftIndex " + [startIndex, (pivotIndex - 1)]);
+                startEndIndexes.push([startIndex, (pivotIndex - 1)]);
+            }
+
+            if (pivotIndex + 1 < endIndex)
+            {
+                console.log("pivotIndex + 1 < rightIndex " + [(pivotIndex + 1), endIndex]);
+                startEndIndexes.push([(pivotIndex + 1), endIndex]);
+            }
+
+            var indexes = startEndIndexes[0];
+            startEndIndexes.splice(0,1);
+            console.log(indexes);
+            leftIndex = indexes[0];
+            startIndex = leftIndex;
+            rightIndex = indexes[1];
+            endIndex = rightIndex;
+            pivotValue = quickArray[leftIndex];
+            ++leftIndex;
+
+            drawArray(quick, quickArray, quickRowNum);
+            ++quickRowNum;
+        }
+    }
 }
+
+
