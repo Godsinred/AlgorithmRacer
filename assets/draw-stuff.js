@@ -13,16 +13,30 @@ var insertionArray;
 var insertionIndex = 1;
 // the index that the step will look at
 var insertionComparisonIndex = 0;
+// the row number that insertion sort will write to
+var insertionRowNum = 0;
 // to determine if the pass is finished
 var insertionPassDone = false;
 // if the algorithm is completed
 var insertionDone = false;
-// the row number that insertion sort will write to
-var insertionRowNum = 0;
 
 // merge sort variables to keep from pass to pass
 var mergeArray;
+// what row we are merging
 var mergeRow = 1;
+// what group we are sorting together
+var mergeGroup = 1;
+// where to start the slicing
+var mergeStart = 0;
+// where to end the parsing 2^mergeRow
+var mergeEnd = 2;
+// slice(2); [2:]
+// slice(2,4); [2:4)
+var a1 = mergeArray.slice(mergeStart, mergeStart + mergeRow);
+var a2 = mergeArray.slice(mergeStart + mergeRow, mergeEnd);
+// to determine if the pass is done so we can update the display
+var mergePassDone = false;
+// if the algorithm is completed
 var mergeDone = false;
 
 // quick sort variables to keep from pass to pass
@@ -89,6 +103,7 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
 function nextStep() 
 {
     // to see which algorithm finishes first
+    // also displays over the algorithm name who is the winner and the amount of operations needed to complete it
     if (insertionDone)
     {
         finished = true;
@@ -121,7 +136,7 @@ function nextStep()
         var quick = canvas3.getContext( "2d" );
 
         insertionStep(insertion);
-        mergePass(merge);
+        mergeStep(merge);
         quickPass(quick);
 
         // updates the counter display in the navbar
@@ -189,7 +204,6 @@ function insertionStep(insertion)
         console.log("LARGER");
         insertionPassDone = true;   
         ++insertionComparisonIndex;
-    
     }
 
     if (insertionPassDone)
@@ -236,11 +250,8 @@ function insertionShift(newIndex)
     insertionArray[newIndex] = insertValue;
 }
 
-function mergePass(merge)
+function mergeStep(merge)
 {
-
-
-    //drawArray(merge, mergeArray);
     
 }
 
