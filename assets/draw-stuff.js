@@ -137,7 +137,7 @@ function nextStep()
     else if (quickDone)
     {
         finished = true;
-        document.getElementById('insertionAlgo').innerHTML = "Quick sort is the winner with" + counter + " operations completed!"
+        document.getElementById('insertionAlgo').innerHTML = "Quick sort is the winner with " + counter + " operations completed!"
     }
 
     if (!finished)
@@ -381,16 +381,15 @@ function quickStep(quick)
     {
         if (!leftFound)
         {
-            // checks to make sure that we don't go out of bounds
-            if (leftIndex > endIndex)
+            
+            if (leftIndex > rightIndex)
             {
-                    --leftIndex;
-                    quickPassDone = true;                
+                    quickPassDone = true;               
             }
             else
             {
                 // scans from left to right to try and find a value bigger than the pivot
-                if (quickArray[leftIndex] <= pivotValue)
+                if (quickArray[leftIndex] < pivotValue)
                 {
                     ++leftIndex;
                 }
@@ -402,10 +401,9 @@ function quickStep(quick)
         }
         else if (!rightFound)
         {
-            // checks to make sure that we don't go out of bounds
-            if (rightIndex < startIndex)
+            
+            if (rightIndex <= leftIndex)
             {
-                ++rightIndex;
                 quickPassDone = true;
             }
             else
@@ -421,6 +419,7 @@ function quickStep(quick)
             }
         }
 
+        // swaps the elements
         if (leftFound && rightFound)
         {
             var temp = quickArray[rightIndex];
@@ -433,49 +432,36 @@ function quickStep(quick)
             leftFound = false;
             rightFound = false;
 
-            ++leftIndex;
-            --rightIndex;
+            // ++leftIndex;
+            // --rightIndex;
         }
 
-        if (leftIndex >= rightIndex || quickPassDone)
+        // the pass is completed and we switch the pivot with the right index
+        if (quickPassDone)
         {
             // means elements were found to be swapped
-            if (!quickPassDone)
-            {   if (leftIndex > rightIndex)
-                {
-                    // swaps the pivot value
-                    var temp = quickArray[rightIndex];
-                    quickArray[rightIndex] = pivotValue;
-                    quickArray[pivotIndex] = temp;
-                    pivotIndex = rightIndex;
-                }
-                else if (leftIndex == rightIndex && pivotValue >= quickArray[rightIndex])
-                {
-                    // swaps the pivot value
-                    var temp = quickArray[rightIndex];
-                    quickArray[rightIndex] = pivotValue;
-                    quickArray[pivotIndex] = temp;
-                    pivotIndex = rightIndex;
-                }
-                else
-                {
-                    // swaps the pivot value with one less since the middle value is larger
-                    var temp = quickArray[rightIndex - 1];
-                    quickArray[rightIndex - 1] = pivotValue;
-                    quickArray[pivotIndex] = temp;
-                    pivotIndex = rightIndex - 1;
-                }
-            }
-            else if (quickPassDone && leftFound)
+            if (quickPassDone && leftFound)
             {
+                console.log("quickPassDone && leftFound");
                 // swaps the pivot value with one less than the found value
-                var temp = quickArray[leftIndex];
-                quickArray[leftIndex] = pivotValue;
+                var temp = quickArray[leftIndex - 1];
+                quickArray[leftIndex - 1] = pivotValue;
                 quickArray[pivotIndex] = temp;
-                pivotIndex = leftIndex;
+                pivotIndex = leftIndex - 1;
+            }
+            // went out of bounds and all the elements are smaller than the pivot
+            else if (quickPassDone && leftIndex > endIndex)
+            {
+                console.log("quickPassDone and left went out of bounds");
+                // swaps the pivot value with the last value since it is all bigger
+                var temp = quickArray[leftIndex - 1];
+                quickArray[leftIndex - 1] = pivotValue;
+                quickArray[pivotIndex] = temp;
+                pivotIndex = leftIndex - 1;
             }
             else if (quickPassDone)
             {
+                console.log("quickPassDone");
                 // swaps the pivot value with the last value since it is all bigger
                 var temp = quickArray[leftIndex];
                 quickArray[leftIndex] = pivotValue;
@@ -486,6 +472,7 @@ function quickStep(quick)
             console.log("pivotIndex: " + pivotIndex);
             console.log("leftIndex: " + leftIndex);
             console.log("rightIndex: " + rightIndex);
+            // gets the new range of left and right indexes for parting the array
             if (pivotIndex - 1 > startIndex)
             {
                 console.log("pivotIndex - 1 > leftIndex " + [startIndex, (pivotIndex - 1)]);
@@ -498,15 +485,24 @@ function quickStep(quick)
                 startEndIndexes.push([(pivotIndex + 1), endIndex]);
             }
 
-            var indexes = startEndIndexes[0];
-            startEndIndexes.splice(0,1);
-            console.log(indexes);
-            startIndex = indexes[0];
-            leftIndex = startIndex;
-            rightIndex = indexes[1];
-            endIndex = rightIndex;
-            pivotValue = quickArray[startIndex];
-            ++leftIndex;
+            if (startEndIndexes.length == 0)
+            {
+                quickDone = true;
+            }
+            else
+            {
+                var indexes = startEndIndexes[0];
+                startEndIndexes.splice(0,1);
+                console.log(indexes);
+                startIndex = indexes[0];
+                leftIndex = startIndex;
+                rightIndex = indexes[1];
+                endIndex = rightIndex;
+                pivotValue = quickArray[startIndex];
+                pivotIndex = startIndex;
+                ++leftIndex;
+                
+            }
             console.log("startIndexNew: " + startIndex);
             console.log("leftIndexNew: " + leftIndex);
             console.log("pivotValueNew: " + pivotValue);
