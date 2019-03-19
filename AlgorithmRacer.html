@@ -16,25 +16,27 @@ Description: This file holds the main body of the program. It calls all the func
   <body>
     <div id = "navbar">
         <button type="button" id="mysteryButton">Don't Click Me! :)</button>
-        <text>NFG</text>
-        <div id="counter"></div>
+        <p>NFG</p>
         <button type="button" id="stepButton" onclick="nextStep()">Step</button>
+        <div id="counter"></div>
     </div>
     
-    <div class="column">  
-      <div id="insertionAlgo"></div>
+    <div id="winnerMSG">
+        <div id="insertionAlgo"></div>
+        <div id="mergeAlgo"></div>
+        <div id="quickAlgo"></div>
+    </div>
+    <div class="column">
       <text class="algoTitles">Insertion Sort</text>
       <canvas id="grid" width="730" height="2650"></canvas>
     </div>
 
     <div class="column">  
-        <div id="mergeAlgo"></div>
         <text class="algoTitles">Merge Sort</text>
         <canvas id="grid2" width="730" height="2650"></canvas>
     </div>
 
     <div class="column"> 
-        <div id="quickAlgo"></div>
         <text class="algoTitles">Quick Sort</text>
         <canvas id="grid3" width="730" height="2650"></canvas>
     </div>
@@ -121,6 +123,12 @@ Description: This file holds the main body of the program. It calls all the func
     drawArray(context3, quickArray, 0);
     
     ++insertionRowNum;
+
+    // initializes the arrays for merge sort
+    // slice(2); [2:]
+    // slice(2,4); [2:4)
+    a1 = mergeArray.slice(mergeStart, mergeStart + mergeRow);
+    a2 = mergeArray.slice(mergeStart + mergeRow, mergeEnd);
 
     document.getElementById('counter').innerHTML = counter;
   </script>

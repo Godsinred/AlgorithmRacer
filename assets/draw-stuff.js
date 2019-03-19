@@ -8,7 +8,7 @@ Description: This program illustrates Wolfram's Rule-90 is based on a 1D array w
 var counter = 0;
 
 // insertion sort variables to keep from pass to pass
-var insertionArray;
+var insertionArray = {};
 // the current index of the element being added
 var insertionIndex = 1;
 // the index that the step will look at
@@ -21,27 +21,36 @@ var insertionPassDone = false;
 var insertionDone = false;
 
 // merge sort variables to keep from pass to pass
-var mergeArray;
+var mergeArray = {};
 // what row we are merging
 var mergeRow = 1;
+// the size of each merge
+var mergeSize = 1;
 // what group we are sorting together
 var mergeGroup = 1;
 // where to start the slicing
 var mergeStart = 0;
 // where to end the parsing 2^mergeRow
 var mergeEnd = 2;
-// slice(2); [2:]
-// slice(2,4); [2:4)
-var a1 = mergeArray.slice(mergeStart, mergeStart + mergeRow);
-var a2 = mergeArray.slice(mergeStart + mergeRow, mergeEnd);
+// how many steps done in that part of the split array
+var mergeCounter = 0;
+// the index of the first array
+var mergeIndex = 0;
+// index of the second array
+var mergeIndex2= 0;
+// arrays for merge sort
+var a1 = {};
+var a2 = {};
 // to determine if the pass is done so we can update the display
 var mergePassDone = false;
+// to see if one of the merging parts are done
+var mergePartDone = false;
 // if the algorithm is completed
 var mergeDone = false;
 
 // quick sort variables to keep from pass to pass
-var quickArray;
-var pivotValue;
+var quickArray = {};
+var pivotValue = -1;
 var leftIndex = 0;
 var rightIndex = 11;
 var quickDone = false;
@@ -107,18 +116,18 @@ function nextStep()
     if (insertionDone)
     {
         finished = true;
-        document.getElementById('insertionAlgo').innerHTML = "WINNER! with " + counter + " operations completed!"
+        document.getElementById('insertionAlgo').innerHTML = "Inserton sort is the winner with " + counter + " operations completed!"
 
     }
     else if (mergeDone)
     {
         finished = true;
-        document.getElementById('insertionAlgo').innerHTML = "WINNER! with " + counter + " operations completed!"
+        document.getElementById('insertionAlgo').innerHTML = "Merge sort is the winner with " + counter + " operations completed!"
     }
     else if (quickDone)
     {
         finished = true;
-        document.getElementById('insertionAlgo').innerHTML = "WINNER! with " + counter + " operations completed!"
+        document.getElementById('insertionAlgo').innerHTML = "Quick sort is the winner with" + counter + " operations completed!"
     }
 
     if (!finished)
@@ -181,12 +190,12 @@ function myFunction() {
 
 function insertionStep(insertion)
 {
-    console.log(insertionArray[insertionIndex].charCodeAt(0));
-    console.log(insertionArray[insertionComparisonIndex].charCodeAt(0));
+    //console.log(insertionArray[insertionIndex].charCodeAt(0));
+    //console.log(insertionArray[insertionComparisonIndex].charCodeAt(0));
     // checks to see if the new value is smaller than the sorted array portion
     if(insertionArray[insertionIndex].charCodeAt(0) < insertionArray[insertionComparisonIndex].charCodeAt(0))
     {
-        console.log("SMALLER");
+        //console.log("SMALLER");
         // to make sure that we don't go out of bounds
         if(insertionComparisonIndex == 0)
         {
@@ -201,7 +210,7 @@ function insertionStep(insertion)
     else
     {
         // we found its correct position and now we need to end the loop
-        console.log("LARGER");
+        //console.log("LARGER");
         insertionPassDone = true;   
         ++insertionComparisonIndex;
     }
@@ -238,11 +247,10 @@ function insertionShift(newIndex)
     // temporary value for the array
     var insertValue = insertionArray[insertionIndex];
 
-    console.log("NEW INDEX: " +  newIndex);
+    //console.log("NEW INDEX: " +  newIndex);
     // shifts all the elements down to the new position
     for(var i = insertionIndex; newIndex < i; --i)
     {
-        console.log(i);
         insertionArray[i] = insertionArray[i - 1];
     }
 
@@ -252,7 +260,111 @@ function insertionShift(newIndex)
 
 function mergeStep(merge)
 {
-    
+    // see which element is smaller to be inserted into the array
+    // both arrays have not been sorted yet
+    if (mergeIndex < a1.length && mergeIndex2 < a2.length)
+    {
+        if (a1[mergeIndex] < a2[mergeIndex2])
+        {
+            //console.log(a1[mergeIndex]);
+            mergeArray[mergeStart] = a1[mergeIndex];
+            ++mergeIndex;
+            ++mergeStart;
+        }
+        else
+        {
+            //console.log(a2[mergeIndex2]);
+            mergeArray[mergeStart] = a2[mergeIndex2];
+            ++mergeIndex2;
+            ++mergeStart;
+        }
+    }
+    // the first array has already been sorted
+    else if (mergeIndex == a1.length && mergeIndex2 < a2.length)
+    {
+        // adds the rest of the a2 to the mergeArray
+        for (mergeStart; mergeStart < mergeEnd; ++mergeStart)
+        {
+            //console.log(a2[mergeIndex2]);
+            mergeArray[mergeStart] = a2[mergeIndex2];
+            ++mergeIndex2;
+        }
+        //console.log("Finished loading 2");
+        mergePartDone = true;
+    }
+    // the second already has already been sorted
+    else if (mergeIndex2 == a2.length && mergeIndex < a1.length)
+    {
+        // adds the rest of the a1 to the mergeArray
+        for (mergeStart; mergeStart < mergeEnd; ++mergeStart)
+        {
+            //console.log(a1[mergeIndex]);
+            mergeArray[mergeStart] = a1[mergeIndex];
+            ++mergeIndex;
+        }
+        //console.log("Finished loading 1");
+        mergePartDone = true;
+    }
+    // both arrays have already been sorted and this part of the merge pass is completed
+    else
+    {
+        //console.log("Finished");
+        mergePartDone = true;
+    }
+
+    // resets all counters and sees if the pass is completed
+    if (mergePartDone)
+    {
+        //console.log("mergePartDone, resetting values.");
+        mergeIndex = 0;
+        mergeIndex2 = 0;
+        mergePartDone = false;
+
+        mergeStart = mergeEnd;
+        mergeEnd += mergeSize * 2;
+        if (mergeEnd > 12)
+        {
+            //console.log("mergePassDone, resetting pass. mergeEnd >12");
+            mergePassDone = true;
+        }
+        else 
+        {
+            a1 = mergeArray.slice(mergeStart, mergeStart + mergeSize);
+            //console.log(a1);
+            a2 = mergeArray.slice(mergeStart + mergeSize, mergeEnd);
+            //console.log(a2);
+        }
+        
+        ++mergeGroup;
+
+        
+
+        if (mergeGroup > (12 / Math.pow(2, mergeRow)) || mergePassDone)
+        {
+            //console.log("mergePassDone, resetting pass.");
+            mergePassDone = false;
+            mergePartDone = false;
+            mergeGroup = 0;
+            
+            drawArray(merge, mergeArray, mergeRow);
+            ++mergeRow;
+            // compares merge row to the ceiling of log base 2 of 12 = 4
+            if (mergeRow > Math.ceil(Math.log(12)/Math.log(2)))
+            {
+                //console.log("MERGE SORT COMPLETELY DONE");
+                mergeDone = true;
+            }
+            mergeStart = 0;
+            mergeEnd = Math.pow(2, mergeRow)
+            mergeSize *= 2;
+
+            //console.log("new pass arrays");
+            a1 = mergeArray.slice(mergeStart, mergeStart + mergeSize);
+            //console.log(a1);
+            a2 = mergeArray.slice(mergeStart + mergeSize, mergeEnd);
+            //console.log(a2);
+        }
+    }
 }
 
 function quickPass(quick)

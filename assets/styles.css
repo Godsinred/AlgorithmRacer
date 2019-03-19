@@ -7,20 +7,16 @@ Description: This files applies formatting to the webpage
 #navbar {
   z-index: 3;
   overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  padding: 40px;
+  display: block;
   background: transparent;
-
   text-align: center;
+  width: 100vw;
 }
 
-#navbar text {
+#navbar > p{
   font-size: 100px;
-}
-
-#navbar counter {
-  font-size: 100px;
+  width:fit-content;
+  display:inline-block;
 }
 
 .content {
@@ -47,8 +43,11 @@ Description: This files applies formatting to the webpage
   padding: 30px 60px;
   text-align: center;
   font-size: 16px;
+  float: left;
+  margin-top: 150px;
   margin-left: 40px;
   margin-bottom: 30px;
+  display: inline-block;
   /* makes the pointer into a hand to make it more button feely. yay ux/ui */
   cursor: pointer; 
 }
@@ -63,15 +62,26 @@ Description: This files applies formatting to the webpage
   color: white;
   padding: 30px 60px;
   text-align: center;
+  float: right;
   font-size: 16px;
+  margin-top: 150px;
   margin-right: 40px;
   margin-bottom: 30px;
+  display: inline-block;
   /* makes the pointer into a hand to make it more button feely. yay ux/ui */
   cursor: pointer; 
 }
 
 #stepButton:hover {
   background-color: green;
+}
+
+#counter {
+  font-size: 100px;
+  display: inline-block;
+  float: right;
+  margin-top: 140px;
+  margin-right: 70px;
 }
 
 h4 {
@@ -99,4 +109,9 @@ canvas {
   float: left;
   width: 33.3%;
   margin-bottom: 100px;
+}
+
+#winnerMSG {
+  display: block;
+  font-size: 50px;
 }
