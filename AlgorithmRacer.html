@@ -17,20 +17,24 @@ Description: This file holds the main body of the program. It calls all the func
     <div id = "navbar">
         <button type="button" id="mysteryButton">Don't Click Me! :)</button>
         <text>NFG</text>
+        <div id="counter"></div>
         <button type="button" id="stepButton" onclick="nextStep()">Step</button>
     </div>
     
     <div class="column">  
+      <div id="insertionAlgo"></div>
       <text class="algoTitles">Insertion Sort</text>
       <canvas id="grid" width="730" height="2650"></canvas>
     </div>
 
     <div class="column">  
+        <div id="mergeAlgo"></div>
         <text class="algoTitles">Merge Sort</text>
         <canvas id="grid2" width="730" height="2650"></canvas>
     </div>
 
     <div class="column"> 
+        <div id="quickAlgo"></div>
         <text class="algoTitles">Quick Sort</text>
         <canvas id="grid3" width="730" height="2650"></canvas>
     </div>
@@ -111,5 +115,13 @@ Description: This file holds the main body of the program. It calls all the func
     quickArray = myArray.slice();
     pivotValue = myArray[0];
 
+    // draws the initial array
+    drawArray(context, insertionArray, 0);
+    drawArray(context2, mergeArray, 0);
+    drawArray(context3, quickArray, 0);
+    
+    ++insertionRowNum;
+
+    document.getElementById('counter').innerHTML = counter;
   </script>
 </html>

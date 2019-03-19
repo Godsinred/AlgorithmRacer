@@ -19,6 +19,10 @@ Description: This files applies formatting to the webpage
   font-size: 100px;
 }
 
+#navbar counter {
+  font-size: 100px;
+}
+
 .content {
   padding: 16px;
 }

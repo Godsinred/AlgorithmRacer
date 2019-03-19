@@ -5,15 +5,20 @@ Description: This program illustrates Wolfram's Rule-90 is based on a 1D array w
             We will illustate on a webpage visually how this works. This file holds all the functions to be called by the Cela Rule 90.html file
 */
 
-
-
-// row number for the drawArray to write on
-var row_number = 0;
+var counter = 0;
 
 // insertion sort variables to keep from pass to pass
 var insertionArray;
+// the current index of the element being added
 var insertionIndex = 1;
+// the index that the step will look at
+var insertionComparisonIndex = 0;
+// to determine if the pass is finished
+var insertionPassDone = false;
+// if the algorithm is completed
 var insertionDone = false;
+// the row number that insertion sort will write to
+var insertionRowNum = 0;
 
 // merge sort variables to keep from pass to pass
 var mergeArray;
@@ -26,6 +31,9 @@ var pivotValue;
 var leftIndex = 0;
 var rightIndex = 11;
 var quickDone = false;
+
+// flag to determine if the first algorithm is finished
+var finished = false;
 
 function draw_rect( ctx, stroke, fill ) 
 {
@@ -80,28 +88,49 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
 
 function nextStep() 
 {
-    // colors the button red on the first click
-    document.getElementById("stepButton").style.color = "red";
+    // to see which algorithm finishes first
+    if (insertionDone)
+    {
+        finished = true;
+        document.getElementById('insertionAlgo').innerHTML = "WINNER! with " + counter + " operations completed!"
 
-    var canvas = document.getElementById( "grid" );
-    var insertion = canvas.getContext( "2d" );
+    }
+    else if (mergeDone)
+    {
+        finished = true;
+        document.getElementById('insertionAlgo').innerHTML = "WINNER! with " + counter + " operations completed!"
+    }
+    else if (quickDone)
+    {
+        finished = true;
+        document.getElementById('insertionAlgo').innerHTML = "WINNER! with " + counter + " operations completed!"
+    }
 
-    var canvas2 = document.getElementById( "grid2" );
-    var merge = canvas2.getContext( "2d" );
+    if (!finished)
+    {
+        // colors the button red on the first click
+        document.getElementById("stepButton").style.color = "red";
 
-    var canvas3 = document.getElementById( "grid3" );
-    var quick = canvas3.getContext( "2d" );
+        var canvas = document.getElementById( "grid" );
+        var insertion = canvas.getContext( "2d" );
 
-    insertionPass(insertion);
-    mergePass(merge);
-    quickPass(quick);
+        var canvas2 = document.getElementById( "grid2" );
+        var merge = canvas2.getContext( "2d" );
 
-    // so the program knows which row to write on
-    ++row_number;
+        var canvas3 = document.getElementById( "grid3" );
+        var quick = canvas3.getContext( "2d" );
 
+        insertionStep(insertion);
+        mergePass(merge);
+        quickPass(quick);
+
+        // updates the counter display in the navbar
+        ++counter;
+        document.getElementById('counter').innerHTML = counter;
+    }
 }
 
-function drawArray(ctx, myArray)
+function drawArray(ctx, myArray, row)
 {
     for (var i = 0; i < 12; ++i)
     {
@@ -109,7 +138,7 @@ function drawArray(ctx, myArray)
         ctx.fillStyle = "green";
         ctx.textAlign = "center";
         ctx.font = "30px Arial";
-        ctx.fillText(myArray[i], 5 + 30 + 60 * i, 70 + (120 *  row_number)); 
+        ctx.fillText(myArray[i], 5 + 30 + 60 * i, 70 + (120 *  row)); 
         ctx.restore( );
     }
 }
@@ -135,50 +164,52 @@ function myFunction() {
     }
 }
 
-function insertionPass(insertion)
+function insertionStep(insertion)
 {
-    if(!insertionDone)
+    console.log(insertionArray[insertionIndex].charCodeAt(0));
+    console.log(insertionArray[insertionComparisonIndex].charCodeAt(0));
+    // checks to see if the new value is smaller than the sorted array portion
+    if(insertionArray[insertionIndex].charCodeAt(0) < insertionArray[insertionComparisonIndex].charCodeAt(0))
     {
-        // to determine if the pass is finished
-        var passDone = false;
-
-        // the comparison index that will be compared to the new inserted value
-        var i = insertionIndex - 1;
-        while (!passDone)
+        console.log("SMALLER");
+        // to make sure that we don't go out of bounds
+        if(insertionComparisonIndex == 0)
         {
-            console.log(insertionArray[insertionIndex].charCodeAt(0));
-            console.log(insertionArray[i].charCodeAt(0));
-            // checks to see if the new value is smaller than the sorted array portion
-            if(insertionArray[insertionIndex].charCodeAt(0) < insertionArray[i].charCodeAt(0))
-            {
-                console.log("SMALLER");
-                // to make sure that we don't go out of bounds
-                if(i == 0)
-                {
-                    passDone = true;
-                }
-                else
-                {
-                    // decrements to check to see if the new value is bigger
-                    --i;
-                }
-            }
-            else
-            {
-                // we found its correct position and now we need to end the loop
-                console.log("LARGER");
-                passDone = true;   
-                ++i;
-            }
+            insertionPassDone = true;
         }
+        else
+        {
+            // decrements to check to see if the new value is bigger
+            --insertionComparisonIndex;
+        }
+    }
+    else
+    {
+        // we found its correct position and now we need to end the loop
+        console.log("LARGER");
+        insertionPassDone = true;   
+        ++insertionComparisonIndex;
     
+    }
+
+    if (insertionPassDone)
+    {
+        // resets to false
+        insertionPassDone = false;
+        
         // shifts the elements down to their new correct position
-        insertionShift(i);
+        insertionShift(insertionComparisonIndex);
+
         // draws the new sorted array
-        drawArray(insertion, insertionArray);
-    
+        drawArray(insertion, insertionArray, insertionRowNum);
+
+        // updates the row number to write to
+        ++insertionRowNum;
+
         // new element positon
         ++insertionIndex;
+        // new comparison index
+        insertionComparisonIndex = insertionIndex - 1;
         
         // checks to see if we completed all the passes
         if(insertionIndex == 12)
@@ -209,7 +240,7 @@ function mergePass(merge)
 {
 
 
-    drawArray(merge, mergeArray);
+    //drawArray(merge, mergeArray);
     
 }
 
@@ -217,5 +248,5 @@ function quickPass(quick)
 {
 
 
-    drawArray(quick, quickArray);
+    //drawArray(quick, quickArray);
 }
