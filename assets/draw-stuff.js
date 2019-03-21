@@ -6,6 +6,8 @@ Description: This program illustrates Wolfram's Rule-90 is based on a 1D array w
 */
 
 var counter = 0;
+// plays cool mario kart start music. i do not own this track or claim any rights to it
+var audio = new Audio('/Users/godsinred/Desktop/AlgorithmRacer/MarioKartStart.mp3');
 
 // insertion sort variables to keep from pass to pass
 var insertionArray = {};
@@ -62,6 +64,8 @@ var startEndIndexes = [];
 var leftFound = false;
 var rightFound = false;
 var quickRowNum = 0;
+var quickPassCounter = 1;
+var quickElemColor = [];
 var quickPassDone = false;
 var quickDone = false;
 
@@ -121,6 +125,16 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
 
 function nextStep() 
 {
+    // colors the button red on the first click
+    
+
+    if (counter == 0)
+    {
+        audio.play();
+        document.getElementById("stepButton").innerHTML = "Step";
+        document.getElementById("stepButton").style.color = "white";
+    }
+    
     // to see which algorithm finishes first
     // also displays over the algorithm name who is the winner and the amount of operations needed to complete it
     if (insertionDone)
@@ -142,9 +156,6 @@ function nextStep()
 
     if (!finished)
     {
-        // colors the button red on the first click
-        document.getElementById("stepButton").style.color = "red";
-
         var canvas = document.getElementById( "grid" );
         var insertion = canvas.getContext( "2d" );
 
@@ -154,13 +165,18 @@ function nextStep()
         var canvas3 = document.getElementById( "grid3" );
         var quick = canvas3.getContext( "2d" );
 
-        //insertionStep(insertion);
-        //mergeStep(merge);
+        insertionStep(insertion);
+        mergeStep(merge);
         quickStep(quick);
 
         // updates the counter display in the navbar
         ++counter;
         document.getElementById('counter').innerHTML = counter;
+    }
+
+    if (finished)
+    {
+        document.getElementById("stepButton").innerHTML = "Finished!";
     }
 }
 
@@ -175,6 +191,16 @@ function drawArray(ctx, myArray, row)
         ctx.fillText(myArray[i], 5 + 30 + 60 * i, 70 + (120 *  row)); 
         ctx.restore( );
     }
+}
+
+function highlightInsertedElem(ctx, item, index, row)
+{
+    ctx.save( );
+    ctx.fillStyle = "#f2b90e";
+    ctx.textAlign = "center";
+    ctx.font = "30px Arial";
+    ctx.fillText(item, 5 + 30 + 60 * index, 70 + (120 *  row)); 
+    ctx.restore( );
 }
 
 // when the window is scroll it will call myFunction
@@ -235,7 +261,8 @@ function insertionStep(insertion)
 
         // draws the new sorted array
         drawArray(insertion, insertionArray, insertionRowNum);
-
+        highlightInsertedElem(insertion, insertionArray[insertionComparisonIndex], insertionComparisonIndex, insertionRowNum);
+        
         // updates the row number to write to
         ++insertionRowNum;
 
@@ -389,7 +416,7 @@ function quickStep(quick)
             else
             {
                 // scans from left to right to try and find a value bigger than the pivot
-                if (quickArray[leftIndex] < pivotValue)
+                if (quickArray[leftIndex] <= pivotValue)
                 {
                     ++leftIndex;
                 }
@@ -402,7 +429,7 @@ function quickStep(quick)
         else if (!rightFound)
         {
             
-            if (rightIndex <= leftIndex)
+            if (rightIndex < leftIndex)
             {
                 quickPassDone = true;
             }
@@ -426,14 +453,13 @@ function quickStep(quick)
             quickArray[rightIndex] = quickArray[leftIndex];
             quickArray[leftIndex] = temp;
             
-            drawArray(quick, quickArray,quickRowNum)
-            ++quickRowNum;
+            // draws everytime a swap is made
+            // drawArray(quick, quickArray,quickRowNum)
+            // ++quickRowNum;
 
             leftFound = false;
             rightFound = false;
 
-            // ++leftIndex;
-            // --rightIndex;
         }
 
         // the pass is completed and we switch the pivot with the right index
@@ -468,22 +494,52 @@ function quickStep(quick)
                 quickArray[pivotIndex] = temp;
                 pivotIndex = leftIndex;
             }
+
+            // pushes the pivot index to the array of items to be color (these are all sorted)
+            quickElemColor.push(pivotIndex);
             
             console.log("pivotIndex: " + pivotIndex);
             console.log("leftIndex: " + leftIndex);
-            console.log("rightIndex: " + rightIndex);
+            console.log("rightIndex: " + rightIndex);// should print everytime a full pass is completed
+               
             // gets the new range of left and right indexes for parting the array
             if (pivotIndex - 1 > startIndex)
             {
                 console.log("pivotIndex - 1 > leftIndex " + [startIndex, (pivotIndex - 1)]);
                 startEndIndexes.push([startIndex, (pivotIndex - 1)]);
             }
+            else
+            {
+                // this item must be sorted
+                (pivotIndex - 1 >= 0) ? quickElemColor.push(pivotIndex - 1) : false;
+            }
 
             if (pivotIndex + 1 < endIndex)
             {
                 console.log("pivotIndex + 1 < rightIndex " + [(pivotIndex + 1), endIndex]);
                 startEndIndexes.push([(pivotIndex + 1), endIndex]);
-            }
+            }   
+            else
+            {
+                // this item must be sorted
+                (pivotIndex + 1 < 12) ? quickElemColor.push(pivotIndex + 1) : false;
+            }  
+
+            // should print everytime a full pass is completed
+            --quickPassCounter;
+            if (quickPassCounter == 0) 
+            {
+                quickPassCounter = startEndIndexes.length;
+                drawArray(quick, quickArray, quickRowNum);
+
+                // colors all the sorted elements
+                for (var i = 0; i < quickElemColor.length; ++i)
+                {
+                    highlightInsertedElem(quick, quickArray[quickElemColor[i]], quickElemColor[i], quickRowNum);
+                }
+                console.log(quickElemColor);
+                ++quickRowNum;
+            }   
 
             if (startEndIndexes.length == 0)
             {
@@ -511,8 +567,9 @@ function quickStep(quick)
             rightFound = false;
             quickPassDone = false;
 
-            drawArray(quick, quickArray, quickRowNum);
-            ++quickRowNum;
+            // prints everytime a part of the array is quick sorted
+            // drawArray(quick, quickArray, quickRowNum);
+            // ++quickRowNum;
         }
     }
 }

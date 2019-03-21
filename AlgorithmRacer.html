@@ -17,8 +17,9 @@ Description: This file holds the main body of the program. It calls all the func
     <div id = "navbar">
         <button type="button" id="mysteryButton">Don't Click Me! :)</button>
         <p>NFG</p>
-        <button type="button" id="stepButton" onclick="nextStep()">Step</button>
+        <button type="button" id="stepButton" onclick="nextStep()">Start</button>
         <div id="counter"></div>
+        <div id="counterLabel">Op Count: </div>
     </div>
     
     <div id="winnerMSG">
@@ -111,7 +112,7 @@ Description: This file holds the main body of the program. It calls all the func
 
     // chooses a random array from the list above. Math.random = [0,1) multiplied by the length returns one of the random arrays
     var myArray = arrayDomain[Math.floor(Math.random() * arrayDomain.length)];
-
+    
     insertionArray = myArray;
     mergeArray = myArray.slice(); // slice () makes a copy of the array object
     quickArray = myArray.slice();
