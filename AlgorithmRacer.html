@@ -47,17 +47,12 @@ Description: This file holds the main body of the program. It calls all the func
 
   <script src="assets/draw-stuff.js"></script>
   <script>
+    // =====================================================  Main ====
 
-  // =====================================================  draw_title ====
-  // Draw filled rect.
-  function draw_title( context ) 
-  {
-      context.save( );
-      context.fillStyle = 'purple';
-      context.font = "30px Arial";
-      context.restore( );
-  }
-  // =====================================================  Main ====
+    // comment this out if you don't want the navbar to move
+    sticky = navbar.offsetTop;
+
+    // gettings the elements so the js can write on the canvas
     var canvas = document.getElementById( "grid" );
     var context = canvas.getContext( "2d" );
 
@@ -121,6 +116,24 @@ Description: This file holds the main body of the program. It calls all the func
 
     // draws the initial array
     drawArray(context, insertionArray, 0);
+
+    // initializes the first row drawings for insertion sort
+    highlightInsertedElem(context, insertionArray[0], 0, insertionRowNum);
+    drawInsertionLine(context, insertionIndex);
+
+    // for drawing the initial boxes as items are already split into 1
+    var colorIndex = 0;
+    for (var i = 0; i < 12; ++i)
+    {
+        if ((i % mergeSize) == 0)
+        {
+            ++colorIndex;
+        }
+        fillBox(context2, i, colorIndex);
+        
+    }
+    mergeRow = 1;
+
     drawArray(context2, mergeArray, 0);
     drawArray(context3, quickArray, 0);
     

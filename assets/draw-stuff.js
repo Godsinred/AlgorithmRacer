@@ -25,9 +25,11 @@ var insertionDone = false;
 // merge sort variables to keep from pass to pass
 var mergeArray = {};
 // what row we are merging
-var mergeRow = 1;
+var mergeRow = 0;
 // the size of each merge
 var mergeSize = 1;
+// the array of colors for the boxes
+var mergeColors = ["#000000", "#FAEBD7", "#E0FFFF", "#90EE90", "#DDA0DD", "#F0E68C", "#AFEEEE", "#D2691E", "#C0C0C0", "#DAA520", "#FF00FF", "#3CB371", "#808000"];
 // what group we are sorting together
 var mergeGroup = 1;
 // where to start the slicing
@@ -127,10 +129,11 @@ function nextStep()
 {
     // colors the button red on the first click
     
-
+    
     if (counter == 0)
     {
-        audio.play();
+        // uncomment to play the mario kart countdown start music ~4seconds
+        // audio.play();
         document.getElementById("stepButton").innerHTML = "Step";
         document.getElementById("stepButton").style.color = "white";
     }
@@ -203,6 +206,33 @@ function highlightInsertedElem(ctx, item, index, row)
     ctx.restore( );
 }
 
+function fillBox(ctx, index, colorIndex)
+{
+    ctx.beginPath();
+    stroke =  'black';
+    fill = mergeColors[colorIndex];
+    ctx.save( );
+    ctx.strokeStyle = stroke;
+    
+    ctx.rect(5 + 60 * index, 5 + 120 * mergeRow, 60, 120);
+    ctx.fillStyle = fill;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fill();
+    ctx.restore( );
+}
+
+function drawInsertionLine(ctx, index)
+{
+    ctx.save( );
+    ctx.beginPath();
+    ctx.moveTo(5 + 60 * index, 5 + 120 * insertionRowNum);
+    ctx.lineTo(5 + 60 * index, 125 + 120 * insertionRowNum);
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.restore( );
+}
+
 // when the window is scroll it will call myFunction
 window.onscroll = function() {myFunction()};
 
@@ -210,7 +240,7 @@ window.onscroll = function() {myFunction()};
 var navbar = document.getElementById("navbar");
 
 // get the offset of the top
-var sticky = navbar.offsetTop;
+var sticky;
 
 // add the sticky class to the navbar when you reach its scroll postition. remove "stick" when you leave the scroll postion
 function myFunction() {
@@ -262,6 +292,7 @@ function insertionStep(insertion)
         // draws the new sorted array
         drawArray(insertion, insertionArray, insertionRowNum);
         highlightInsertedElem(insertion, insertionArray[insertionComparisonIndex], insertionComparisonIndex, insertionRowNum);
+        drawInsertionLine(insertion, insertionIndex + 1);
         
         // updates the row number to write to
         ++insertionRowNum;
@@ -381,6 +412,16 @@ function mergeStep(merge)
             mergePartDone = false;
             mergeGroup = 0;
             
+            var colorIndex = 0;
+            for (var i = 0; i < 12; ++i)
+            {
+                if ((i % (mergeSize * 2)) == 0)
+                {
+                    ++colorIndex;
+                }
+                fillBox(merge, i, colorIndex);
+                
+            }
             drawArray(merge, mergeArray, mergeRow);
             ++mergeRow;
             // compares merge row to the ceiling of log base 2 of 12 = 4
