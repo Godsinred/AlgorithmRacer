@@ -52,6 +52,11 @@ Description: This file holds the main body of the program. It calls all the func
     // comment this out if you don't want the navbar to move
     sticky = navbar.offsetTop;
 
+    if (AUDIO)
+    {
+      marioKartStartAudio.play();
+    }
+
     // gettings the elements so the js can write on the canvas
     var canvas = document.getElementById( "grid" );
     var context = canvas.getContext( "2d" );

@@ -5,9 +5,19 @@ Description: This program illustrates Wolfram's Rule-90 is based on a 1D array w
             We will illustate on a webpage visually how this works. This file holds all the functions to be called by the Cela Rule 90.html file
 */
 
+// how many operations have occured
 var counter = 0;
+
+// make fales for no audio
+var AUDIO = true;
+
 // plays cool mario kart start music. i do not own this track or claim any rights to it
-var audio = new Audio('/Users/godsinred/Desktop/AlgorithmRacer/MarioKartStart.mp3');
+var marioKartStartAudio = new Audio('/Users/godsinred/Desktop/AlgorithmRacer/sounds/MarioKartStart.mp3');
+// lowers the volume of the start count down to be about the same as the star power
+marioKartStartAudio.volume = 0.25;
+var starPowerAudio = new Audio('/Users/godsinred/Desktop/AlgorithmRacer/sounds/StarPower.mp3');
+var finishedAudio = new Audio('/Users/godsinred/Desktop/AlgorithmRacer/sounds/Finished.mp3');
+var mk64Winner = new Audio('/Users/godsinred/Desktop/AlgorithmRacer/sounds/mk64_firstplace.wav');
 
 // insertion sort variables to keep from pass to pass
 var insertionArray = {};
@@ -29,7 +39,7 @@ var mergeRow = 0;
 // the size of each merge
 var mergeSize = 1;
 // the array of colors for the boxes
-var mergeColors = ["#000000", "#FAEBD7", "#E0FFFF", "#90EE90", "#DDA0DD", "#F0E68C", "#AFEEEE", "#D2691E", "#C0C0C0", "#DAA520", "#FF00FF", "#3CB371", "#808000"];
+var mergeColors = ["#000000", "#FAEBD7", "#E0FFFF", "#90EE90", "#DDA0DD", "#F0E68C", "#AFEEEE", "#f28143", "#C0C0C0", "#DAA520", "#FF00FF", "#eaff66", "#ff8c8c"];
 // what group we are sorting together
 var mergeGroup = 1;
 // where to start the slicing
@@ -132,8 +142,13 @@ function nextStep()
     
     if (counter == 0)
     {
-        // uncomment to play the mario kart countdown start music ~4seconds
-        // audio.play();
+        if (AUDIO)
+        {
+            marioKartStartAudio.pause();
+            marioKartStartAudio.currentTime = 0;
+            starPowerAudio.play();
+        }
+
         document.getElementById("stepButton").innerHTML = "Step";
         document.getElementById("stepButton").style.color = "white";
     }
@@ -180,6 +195,17 @@ function nextStep()
     if (finished)
     {
         document.getElementById("stepButton").innerHTML = "Finished!";
+
+        if (AUDIO)
+        {
+            starPowerAudio.pause();
+            starPowerAudio.currentTime = 0;
+            finishedAudio.play();
+            setTimeout(function()
+            {
+                mk64Winner.play();
+            } , 1000);
+        }
     }
 }
 
