@@ -15,33 +15,35 @@ Description: This file holds the main body of the program. It calls all the func
   
   <body>
     <div id = "navbar">
-        <button type="button" id="mysteryButton">Don't Click Me! :)</button>
+        <button type="button" id="mysteryButton" onclick="removeStandardAlgos()">Don't Click Me! :)</button>
         <p>NFG</p>
         <button type="button" id="stepButton" onclick="nextStep()">Start</button>
         <div id="counter"></div>
         <div id="counterLabel">Op Count: </div>
     </div>
-    
-    <div id="winnerMSG">
-        <div id="insertionAlgo"></div>
-        <div id="mergeAlgo"></div>
-        <div id="quickAlgo"></div>
-    </div>
-    <div class="column">
-      <text class="algoTitles">Insertion Sort</text>
-      <canvas id="grid" width="730" height="2650"></canvas>
-    </div>
 
-    <div class="column">  
-        <text class="algoTitles">Merge Sort</text>
-        <canvas id="grid2" width="730" height="2650"></canvas>
-    </div>
+    <div id = "standardAlgos">
+      <div id="winnerMSG">
+          <div id="insertionAlgo"></div>
+          <div id="mergeAlgo"></div>
+          <div id="quickAlgo"></div>
+      </div>
 
-    <div class="column"> 
-        <text class="algoTitles">Quick Sort</text>
-        <canvas id="grid3" width="730" height="2650"></canvas>
+      <div class="column">
+        <text class="algoTitles">Insertion Sort</text>
+        <canvas id="grid" width="730" height="2650"></canvas>
+      </div>
+
+      <div class="column">  
+          <text class="algoTitles">Merge Sort</text>
+          <canvas id="grid2" width="730" height="2650"></canvas>
+      </div>
+
+      <div class="column"> 
+          <text class="algoTitles">Quick Sort</text>
+          <canvas id="grid3" width="730" height="2650"></canvas>
+      </div>
     </div>
-      
     
   </body>
 
@@ -66,7 +68,6 @@ Description: This file holds the main body of the program. It calls all the func
 
     var canvas3 = document.getElementById( "grid3" );
     var context3 = canvas3.getContext( "2d" );
-
     
     // params: context, border color, middle fill color
     // sets up the box that the algorithm will display the steps in

@@ -9,7 +9,7 @@ Description: This program illustrates Wolfram's Rule-90 is based on a 1D array w
 var counter = 0;
 
 // make fales for no audio
-var AUDIO = true;
+var AUDIO = false;
 
 // plays cool mario kart start music. i do not own this track or claim any rights to it
 var marioKartStartAudio = new Audio('/Users/godsinred/Desktop/AlgorithmRacer/sounds/MarioKartStart.mp3');
@@ -135,11 +135,17 @@ function draw_grid( rctx, rminor, rmajor, rstroke, rfill  )
     rctx.restore( );
 }
 
+function removeStandardAlgos()
+{
+    var test = document.getElementById("standardAlgos");
+    test.remove();
+
+    // unhide all the cool algorithms
+    // document.getElementById("test").style.visibility = "visible";
+}
+
 function nextStep() 
 {
-    // colors the button red on the first click
-    
-    
     if (counter == 0)
     {
         if (AUDIO)
